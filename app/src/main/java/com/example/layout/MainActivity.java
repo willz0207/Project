@@ -1,5 +1,9 @@
     package com.example.layout;
-
+    import android.content.BroadcastReceiver;
+    import android.content.IntentFilter;
+    import android.net.wifi.WifiManager;
+    import android.widget.CompoundButton;
+    import android.widget.Switch;
     import android.content.Context;
     import android.content.Intent;
     import android.content.SharedPreferences;
@@ -29,6 +33,7 @@
             passTxt = findViewById(R.id.passTxt);
             loginBtn = (Button) findViewById(R.id.loginBtn);
 
+
             sharedPreferences = getSharedPreferences(myPREFERENCES, Context.MODE_PRIVATE);
 
             loginBtn.setOnClickListener(new View.OnClickListener() {
@@ -41,7 +46,7 @@
                         else{
                             SharedPreferences.Editor editor = sharedPreferences.edit();
                             editor.putString(Email, emailTxt.getText().toString());
-                            editor.commit();
+                            editor.apply();
                             openArctivityHome();
                         }
                     }
@@ -59,4 +64,6 @@
             intent.putExtras(bundle);
             startActivity(intent);
         }
+
+
     }

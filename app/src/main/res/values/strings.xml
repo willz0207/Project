@@ -5,4 +5,12 @@
     <string name="login">LOGIN</string>
     <string name="password">Password</string>
     <string name="not_a_member_sign_up_now">Not a member ? Sign up now.</string>
+    <string name="nameerror">Enter Valid Name</string>
+    <string name="emailerror">Enter Valid Email</string>
+    <string name="passworderror">Enter Some Password</string>
+    <string name="mobileerror">Enter Valid Mobile Number</string>
 </resources>
+
+
+
+
