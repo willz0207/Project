@@ -1,4 +1,4 @@
- package com.example.layout;
+
 
     import android.content.Context;
     import android.content.Intent;
@@ -36,7 +36,7 @@
                 public void onClick(View v) {
                     if (emailTxt.getText().toString().trim().matches(emailPattern)){
                         if (passTxt.getText().toString().isEmpty()){
-                            Toast.makeText(getApplicationContext(),"Password is empty !",Toast.LENGTH_SHORT).show();
+
                         }
                         else{
                             SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -46,7 +46,7 @@
                         }
                     }
                     else {
-                        Toast.makeText(getApplicationContext(),"Incorrect email and password !",Toast.LENGTH_SHORT).show();
+
                     }
                 }
             });
@@ -59,5 +59,4 @@
             intent.putExtras(bundle);
             startActivity(intent);
         }
-    }
 

@@ -2,7 +2,6 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="#0000FF"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity">
@@ -19,38 +18,32 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <EditText
-            android:id="@+id/emailtxt"
+            android:id="@+id/emailTxt"
             android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
-            android:inputType="text"
-            android:hint="@string/email"
-            android:autofillHints=""
-            tools:ignore="TextFields,UnusedAttribute" />
+            android:hint="Email" />
 
         <EditText
-            android:id="@+id/passwordtxt"
+            android:id="@+id/passTxt"
             android:layout_width="300dp"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="20dp"
-            android:inputType=""
-            android:hint="@string/password"
-            android:importantForAutofill="no" />
+            android:layout_marginBottom="30dp"
+            android:hint="Password"
+            android:inputType="textPassword" />
 
         <Button
             android:id="@+id/loginBtn"
             android:layout_width="300dp"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:text="@string/login" />
+            android:layout_marginBottom="50dp"
+            android:text="LOGIN" />
 
         <TextView
             android:id="@+id/textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/not_a_member_sign_up_now" />
+            android:text="Not a member ? Sign up now." />
     </LinearLayout>
-
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>
