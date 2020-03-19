@@ -14,12 +14,11 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+
 
 public class DatabaseFragment extends Fragment {
     private SQLiteDatabase mydb ;
-    private RecyclerView rv;
+
     private EditText isinim;
     private EditText isinama;
     private EditText isinohp;
@@ -27,9 +26,9 @@ public class DatabaseFragment extends Fragment {
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
         View v= inflater.inflate(R.layout.activity_database,container,false);
-        rv = v.findViewById(R.id.listdb);
 
-        rv.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+
 
         isinim = v.findViewById(R.id.insertnim);
         isinama = v.findViewById(R.id.insertnama);
