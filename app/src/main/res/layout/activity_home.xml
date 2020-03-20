@@ -75,7 +75,7 @@
             android:layout_weight="1"
             android:layout_gravity="center"
             android:onClick="scheduleJob"
-            android:text="Schedule Job"
+            android:text="Scheduler 3 detik"
              />
 
         <Button
@@ -85,7 +85,7 @@
             android:layout_weight="1"
             android:layout_gravity="center"
             android:onClick="cancelJob"
-            android:text="Cancel Job" />
+            android:text="dummy" />
     </LinearLayout>
 
     <TextView
