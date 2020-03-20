@@ -3,7 +3,13 @@ package com.example.layout;
 
 import android.app.NotificationManager;
 import androidx.annotation.RequiresApi;
+
+import android.app.job.JobInfo;
+import android.app.job.JobScheduler;
 import android.content.BroadcastReceiver;
+import android.content.ComponentName;
+import android.os.Handler;
+import android.util.Log;
 import android.widget.Toast;
 import android.content.Context;
 import android.content.Intent;
@@ -11,7 +17,8 @@ import android.content.IntentFilter;
 import android.net.wifi.WifiManager;
 import android.os.Build;
 import android.os.Bundle;
-
+import java.util.Timer;
+import java.util.TimerTask;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -30,6 +37,9 @@ public class HomeActivity extends AppCompatActivity {
     private WifiManager wifiManager;
     private static final String TAG = "MainActivity";
     private Switch wifiSwitch;
+    public static final long INTERVAL = 3000;
+    private Handler mHandler = new Handler();
+    private Timer mTimer = null;
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
@@ -141,6 +151,44 @@ public class HomeActivity extends AppCompatActivity {
         transaction.commit();
     }
 
+    public void scheduleJob(View v) {
+        ComponentName componentName = new ComponentName(this, MyJobService.class);
+        JobInfo info = new JobInfo.Builder(123, componentName)
+                .setPersisted(true)
+                .setPeriodic(15 * 60 * 1000)
+                .build();
+
+        JobScheduler scheduler = (JobScheduler) getSystemService(JOB_SCHEDULER_SERVICE);
+        int resultCode = scheduler.schedule(info);
+        if (resultCode == JobScheduler.RESULT_SUCCESS) {
+            Log.d(TAG, "Job scheduled");
+        } else {
+            Log.d(TAG, "Job scheduling failed");
+        }
+        if (mTimer!=null) {
+            mTimer.cancel();
+        }
+        else
+            mTimer = new Timer();
+
+        mTimer.scheduleAtFixedRate(new TimeDisplayToast(),0,INTERVAL);
+    }
+
+    private class TimeDisplayToast extends TimerTask {
+
+        @Override
+        public void run() {
+            mHandler.post(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(getApplicationContext(),"3 Detik !", Toast.LENGTH_SHORT).show();
+
+                }
+
+            });
+        }
+
+    }
 
 
 
