@@ -57,18 +57,6 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
 
-        if(getIntent().getExtras()!=null){
-            /**
-             * Jika Bundle ada, ambil data dari Bundle
-             */
-            Bundle bundle = getIntent().getExtras();
-            txtUser.setText(bundle.getString("dataUsername"));
-        }else{
-            /**
-             * Apabila Bundle tidak ada, ambil dari Intent
-             */
-            txtUser.setText(getIntent().getStringExtra("dataUsername"));
-        }
 
 
 
