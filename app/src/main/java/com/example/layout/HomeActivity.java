@@ -2,13 +2,14 @@ package com.example.layout;
 
 
 import android.app.NotificationManager;
-
+import androidx.annotation.RequiresApi;
 import android.content.BroadcastReceiver;
-
+import android.widget.Toast;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.wifi.WifiManager;
+import android.os.Build;
 import android.os.Bundle;
 
 import android.view.View;
@@ -30,7 +31,7 @@ public class HomeActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
     private Switch wifiSwitch;
 
-
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -93,12 +94,15 @@ public class HomeActivity extends AppCompatActivity {
 
             switch (wifiStateExtra){
                 case WifiManager.WIFI_STATE_ENABLED:
-                    //Toast.makeText(getApplicationContext(),"WiFi is ONLINE",Toast.LENGTH_SHORT).show();
+                    wifiSwitch.setChecked(true);
+                    wifiSwitch.setText("wifi is on");
+                    Toast.makeText(context,"WiFi is ONLINE",Toast.LENGTH_SHORT).show();
                     setNotification(context, "WiFi is Enabled");
                     break;
                 case WifiManager.WIFI_STATE_DISABLED:
-                    //Toast.makeText(getApplicationContext(),"WiFi is OFFLINE",Toast.LENGTH_SHORT).show();
-                    setNotification(context, "WiFi is Disabled");
+                    wifiSwitch.setChecked(false);
+                    wifiSwitch.setText("WIFI is OFF");
+                    Toast.makeText(context, "WIFI is OFF", Toast.LENGTH_SHORT).show();
                     break;
             }
         }
