@@ -40,6 +40,7 @@ public class HomeActivity extends AppCompatActivity {
     public static final long INTERVAL = 3000;
     private Handler mHandler = new Handler();
     private Timer mTimer = null;
+    private Button btnfilm;
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
@@ -49,7 +50,13 @@ public class HomeActivity extends AppCompatActivity {
 
         txtUser = (TextView) findViewById((R.id.txtUser));
         btnAbout = (Button) findViewById(R.id.btnAbout);
-
+        btnfilm = (Button) findViewById(R.id.film_list);
+        btnfilm.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                openActivityFilm();
+            }
+        });
         wifiSwitch = findViewById(R.id.wifi_switch);
 
         wifiManager = (WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE);
@@ -172,6 +179,11 @@ public class HomeActivity extends AppCompatActivity {
             mTimer = new Timer();
 
         mTimer.scheduleAtFixedRate(new TimeDisplayToast(),0,INTERVAL);
+    }
+
+    public void openActivityFilm(){
+        Intent intent = new Intent(this, film.class);
+        startActivity(intent);
     }
 
     private class TimeDisplayToast extends TimerTask {
