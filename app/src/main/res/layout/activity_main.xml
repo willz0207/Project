@@ -6,46 +6,98 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <LinearLayout
+    <!-- for progress loading -->
+
+    <EditText
+        android:id="@+id/edit_text_username_activity_main"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/image_view_icon_firebase_activity_main"
+        android:hint="Username"
+        android:imeOptions="actionNext"
+        android:maxLines="1"
+
+        android:singleLine="true"
+        android:textColor="@android:color/white"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="143dp" />
+
+    <EditText
+        android:id="@+id/edit_text_password_activity_main"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/edit_text_username_activity_main"
+        android:hint="Password"
+        android:imeOptions="actionDone"
+        android:inputType="textPassword"
+        android:maxLines="1"
+
+        android:singleLine="true"
+        android:textColor="@android:color/white"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="231dp" />
+
+    <Button
+        android:id="@+id/button_login_activity_main"
+        android:layout_width="176dp"
+        android:layout_height="65dp"
+        android:layout_below="@id/edit_text_password_activity_main"
+        android:layout_marginStart="16dp"
+
+        android:layout_marginTop="332dp"
+        android:text="Login"
+        android:textColor="@android:color/white"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/button_sign_up_activity_main"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+
+        android:minWidth="0dp"
+        android:minHeight="0dp"
+
+        android:paddingTop="10dp"
+
+        android:paddingBottom="10dp"
+        android:text="Create an account"
+        android:textAllCaps="false"
+        android:textColor="@android:color/white"
+        android:textSize="15sp"
+        tools:layout_editor_absoluteX="65dp"
+        tools:layout_editor_absoluteY="408dp" />
+
+    <TextView
+        android:id="@+id/text_view_not_registered_activity_main"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/button_sign_up_activity_main"
+        android:layout_centerHorizontal="true"
+        android:gravity="center"
+        android:text="Not registered?"
+        tools:layout_editor_absoluteX="222dp"
+        tools:layout_editor_absoluteY="421dp" />
+
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:id="@+id/relative_layout_progress_activity_main"
+        android:background="@android:color/black"
+        android:alpha="0.7"
+        android:clickable="true"
+        android:visibility="gone"
+        >
 
-        <EditText
-            android:id="@+id/emailTxt"
-            android:layout_width="300dp"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:hint="Email" />
-
-        <EditText
-            android:id="@+id/passTxt"
-            android:layout_width="300dp"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="30dp"
-            android:hint="Password"
-            android:inputType="textPassword" />
-
-
-
-        <Button
-            android:id="@+id/loginBtn"
-            android:layout_width="300dp"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="50dp"
-            android:text="LOGIN" />
-
-        <TextView
-            android:id="@+id/textView"
+        <ProgressBar
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Not a member ? Sign up now." />
-    </LinearLayout>
+            android:layout_centerInParent="true"
+            />
+
+    </RelativeLayout>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
