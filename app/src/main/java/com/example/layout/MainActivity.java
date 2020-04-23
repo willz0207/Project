@@ -1,69 +1,151 @@
     package com.example.layout;
-    import android.content.BroadcastReceiver;
-    import android.content.IntentFilter;
-    import android.net.wifi.WifiManager;
-    import android.widget.CompoundButton;
-    import android.widget.Switch;
-    import android.content.Context;
+
+    import android.content.DialogInterface;
     import android.content.Intent;
-    import android.content.SharedPreferences;
     import android.os.Bundle;
+    import android.text.TextUtils;
     import android.view.View;
     import android.widget.Button;
     import android.widget.EditText;
-    import android.widget.Toast;
+    import android.widget.RelativeLayout;
 
+    import androidx.annotation.NonNull;
+    import androidx.appcompat.app.AlertDialog;
     import androidx.appcompat.app.AppCompatActivity;
 
+
+    import com.google.android.gms.tasks.OnCompleteListener;
+    import com.google.android.gms.tasks.Task;
+    import com.google.android.material.snackbar.Snackbar;
+    import com.google.firebase.auth.AuthResult;
+    import com.google.firebase.auth.FirebaseAuth;
+
+    import butterknife.BindView;
+    import butterknife.ButterKnife;
+    import butterknife.OnClick;
+
     public class MainActivity extends AppCompatActivity {
-        private Button loginBtn;
-        private EditText emailTxt;
-        private EditText passTxt;
-        String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
-        public static final String myPREFERENCES = "MyPrefs";
-        public static final String Email = "emailKey";
-        SharedPreferences sharedPreferences;
+
+        @BindView(R.id.relative_layout_progress_activity_main)
+        RelativeLayout relativeLayoutProgress;
+        @BindView(R.id.edit_text_username_activity_main)
+        EditText editTextUsername;
+        @BindView(R.id.edit_text_password_activity_main)
+        EditText editTextPassword;
+
+        private FirebaseAuth firebaseAuth;
+        private boolean loggedIn;
 
         @Override
         protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_main);
-
-            emailTxt = findViewById(R.id.emailTxt);
-            passTxt = findViewById(R.id.passTxt);
-            loginBtn = (Button) findViewById(R.id.loginBtn);
-
-
-            sharedPreferences = getSharedPreferences(myPREFERENCES, Context.MODE_PRIVATE);
-
-            loginBtn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (emailTxt.getText().toString().trim().matches(emailPattern)){
-                        if (passTxt.getText().toString().isEmpty()){
-                            Toast.makeText(getApplicationContext(),"Password is empty !", Toast.LENGTH_SHORT).show();
-                        }
-                        else{
-                            SharedPreferences.Editor editor = sharedPreferences.edit();
-                            editor.putString(Email, emailTxt.getText().toString());
-                            editor.apply();
-                            openArctivityHome();
-                        }
-                    }
-                    else {
-                        Toast.makeText(getApplicationContext(),"Incorrect email and password !", Toast.LENGTH_SHORT).show();
-                    }
-                }
-            });
+            initFirebase();
+            ButterKnife.bind(this);
+            loggedIn = isLoggedIn();
+            if (loggedIn) {
+                //  go to dashboard
+                goToacitvity_main();
+            }
         }
-//aded
-        public void openArctivityHome(){
-            Bundle bundle = new Bundle();
-            bundle.putString("dataUsername", emailTxt.getText().toString());
+
+        private void initFirebase() {
+            firebaseAuth = FirebaseAuth.getInstance();
+        }
+
+        //private void goToDashboard() {
+         //   Intent intent = new Intent(this, DashboardActivity.class);
+         //   intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        //    startActivity(intent);
+        //}
+
+        @OnClick({R.id.button_login_activity_main, R.id.button_sign_up_activity_main})
+        public void onClick(Button button) {
+            switch (button.getId()) {
+                case R.id.button_login_activity_main:
+                    String username = editTextUsername.getText().toString().trim();
+                    String password = editTextPassword.getText().toString().trim();
+                    login(username, password);
+                    break;
+                //case R.id.button_sign_up_activity_main:
+                    //  go to form pendaftaran
+                   // startActivity(new Intent(this, SignupActivity.class));
+                   // break;
+            }
+        }
+
+        private void login(final String username, final String password) {
+            if (TextUtils.isEmpty(username)) {
+                Snackbar.make(findViewById(android.R.id.content), R.string.error_message_username_empty, Snackbar.LENGTH_LONG)
+                        .show();
+            } else if (TextUtils.isEmpty(password)) {
+                Snackbar.make(findViewById(android.R.id.content), R.string.error_message_password_empty, Snackbar.LENGTH_LONG)
+                        .show();
+            } else {
+                //  do login
+                showProgress();
+                firebaseAuth.signInWithEmailAndPassword(username, password)
+                        .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                            @Override
+                            public void onComplete(@NonNull Task<AuthResult> task) {
+                                hideProgress();
+                                if (task.isSuccessful()) {
+                                    //  login sucess
+                                    //  go to dashboard
+                                    goToacitvity_main();
+                                } else {
+                                    //  login failed
+                                    showMessageBox("Login failed. Your username and password is not matched");
+                                }
+                            }
+                        });
+
+            }
+        }
+
+        private void goToacitvity_main() {
+            Intent intent = new Intent(this, MainActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+        }
+        private void goToacitvity_home() {
             Intent intent = new Intent(this, HomeActivity.class);
-            intent.putExtras(bundle);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
         }
 
+        private void hideProgress() {
+            relativeLayoutProgress.setVisibility(View.GONE);
+            editTextUsername.setEnabled(true);
+            editTextPassword.setEnabled(true);
+        }
 
+        private void showProgress() {
+            relativeLayoutProgress.setVisibility(View.VISIBLE);
+            editTextUsername.setEnabled(false);
+            editTextPassword.setEnabled(false);
+        }
+
+        private void showMessageBox(String message) {
+            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+            alertDialogBuilder.setTitle("Login");
+            alertDialogBuilder.setMessage(message);
+            alertDialogBuilder.setCancelable(false);
+            alertDialogBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    dialogInterface.dismiss();
+                }
+            });
+            alertDialogBuilder.show();
+        }
+
+        public boolean isLoggedIn() {
+            if (firebaseAuth.getCurrentUser() != null) {
+                //  user logged in
+                return true;
+            } else {
+                return false;
+            }
+        }
     }
